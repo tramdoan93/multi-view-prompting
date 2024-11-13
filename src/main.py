@@ -31,6 +31,8 @@ from data_utils import ABSADataset, task_data_list, cal_entropy
 from const import *
 from data_utils import read_line_examples_from_file
 from eval_utils import compute_scores, extract_spans_para
+import multiprocessing
+multiprocessing.set_start_method('spawn', force=True)
 
 
 def set_seed(seed: int = 42) -> None:
