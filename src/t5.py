@@ -6,6 +6,8 @@ from transformers.file_utils import ModelOutput
 # from transformers.generation_utils import *
 # from transformers.generation_beam_search import *
 from transformers.generation import BeamSearchScorer, beam_search, GenerationMixin
+from transformers import T5PreTrainedModel, T5Config
+# from transformers.generation import GenerationMixin
 import copy
 
 _CONFIG_FOR_DOC = "T5Config"
@@ -53,10 +55,10 @@ DEPARALLELIZE_DOCSTRING = r"""
 
 add_start_docstrings("""T5 Model with a `language modeling` head on top. """, T5_START_DOCSTRING)
 @add_start_docstrings("""T5 Model with a `language modeling` head on top. """, T5_START_DOCSTRING)
-class MyT5ForConditionalGeneration(T5PreTrainedModel):
+class MyT5ForConditionalGeneration(T5PreTrainedModel,GenerationMixin):
     authorized_missing_keys = [r"encoder\.embed_tokens\.weight", r"decoder\.embed_tokens\.weight", r"lm_head\.weight"]
 
-    def __init__(self, config):
+    def __init__(self, config: T5Config):
         super().__init__(config)
         self.model_dim = config.d_model
 
