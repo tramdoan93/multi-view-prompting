@@ -27,6 +27,11 @@ from transformers import get_linear_schedule_with_warmup
 from transformers import AdamW, T5Tokenizer
 
 from t5 import MyT5ForConditionalGeneration
+
+# Ensure gradients are enabled for model parameters
+for param in model.parameters():
+    param.requires_grad = True
+
 from data_utils import ABSADataset, task_data_list, cal_entropy
 from const import *
 from data_utils import read_line_examples_from_file
@@ -214,6 +219,9 @@ class T5FineTuner(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         loss = self._step(batch)
         self.log("train_loss", loss)
+loss.backward()  # Perform the backward pass to calculate gradients
+optimizer.step()  # Update model parameters
+optimizer.zero_grad()  # Clear gradients for the next iteration
         return loss
 
     def evaluate(self, batch, stage=None):
